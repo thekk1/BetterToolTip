@@ -1,0 +1,21 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<!-- $Id$ -->
+	
+	<!-- Localization -->
+	
+	<!-- My Script -->
+	<Script file="BetterTooltip.lua"/>
+
+	<!-- My AddOn Frames -->
+	<Frame name="BetterTooltipFrame" parent="UIParent">
+		<Scripts>
+			<OnLoad>
+				BetterTooltip_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				BetterTooltip_OnEvent(event);
+			</OnEvent>
+		</Scripts>
+	</Frame>
+</Ui>

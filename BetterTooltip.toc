@@ -6,3 +6,4 @@
 ## DefaultState: enabled
 
 BetterTooltip.lua
+BetterTooltip.xml
