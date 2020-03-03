@@ -5,10 +5,11 @@ Download and unzip to your WoW Addon folder. (..\World of Warcraft\_retail_\Inte
 Rename folder "BetterTooltip-master" to "BetterTooltip".
 
 ## Addon changes tooltip by:
-|| Action || Behavior || 
-|| Mouseover an Player || Shows tooltip bottom right ||
-|| Mouseover anything else || Shows tooltip at cursor ||
-|| Infight || no tooltips ||
+| Action | Behavior | 
+| --- | --- |
+| Mouseover an Player | Shows tooltip bottom right |
+| Mouseover anything else | Shows tooltip at cursor |
+| Infight | no tooltips |
 
 ## Setup
 Open BetterTooltip.lua in your addon folder.
