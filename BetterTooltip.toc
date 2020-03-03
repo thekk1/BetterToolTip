@@ -1,0 +1,8 @@
+## Interface: 80300
+## Title: BetterTooltip
+## Notes: Shows everything not a player unit on cursor, every player unit on bottom right and hides all tooltips infight.
+## Author: husker
+## eMail: thekk@gmx.de
+## DefaultState: enabled
+
+BetterTooltip.lua
