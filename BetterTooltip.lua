@@ -6,8 +6,6 @@ local edgeOffsetY = 0.10 --Distance from bottom screen edge in percent
 local cursorOffsetX = 25 --X offset to cursor (scaled) pixel 
 local cursorOffsetY = 50 --Y offset to cursor (scaled) pixel
 --Move it with the mouse updates, but not too often so we don't waste CPU
-local Tooltip_interval=0.1
-GameTooltip.TimeSinceLastUpdate=0
 local mousePressed = false
 local lastViewPlayer = false
 
@@ -28,7 +26,9 @@ function mouseAnchor(tooltip, parent)
 	local x, y = GetCursorPosition()
 	x, y = x / scale + cursorOffsetX, y / scale + cursorOffsetY
 	tooltip:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", x, y)
-	tooltip:SetScript("OnShow", tooltip.Show);
+	tooltip.lastPos = "mouse"
+	--tooltip:SetScript("OnShow", tooltip.Show);
+	--tooltip:Show()
 end
 
 function BetterTooltip_OnMouseDown()
@@ -42,30 +42,39 @@ function BetterTooltip_OnMouseUp()
 end
 
 local function BetterTooltip_OnUpdate(tooltip, elapsed)
-	--Preserve Auction House Tooltip Behavior
+	if tooltip.TimeSinceLastUpdate > 1000 or tooltip.TimeSinceLastUpdate < 1000 then tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME; end
 	parent=tooltip:GetParent();
+	--Preserve Auction House Tooltip Behavior
 	if AuctionFrame and AuctionFrame:IsShown() then
 		return
 	end
-	tooltip.TimeSinceLastUpdate = tooltip.TimeSinceLastUpdate + elapsed
-	if (tooltip.TimeSinceLastUpdate < Tooltip_interval) or not tooltip.default then return;	end
+	
+	tooltip.TimeSinceLastUpdate = tooltip.TimeSinceLastUpdate - elapsed
+	if ( tooltip.updateTooltip < 0 or not tooltip.default) then
+		return;
+	end
+	tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME;
 
 	--Set the Tooltip position, if we're on WorldFrame, anchor to the mouse; if we're on a UnitFrame anchor to that.
 	local mouseFocus=GetMouseFocus()
 	if mouseFocus == nil then return; end;
 	if mouseFocus==WorldFrame then
 		if UnitAffectingCombat("player") then
+			tooltip.lastPos = "hidden"
 			tooltip:Hide()
 			return
-		elseif not UnitPlayerControlled("mouseover") and not mousePressed and not lastViewPlayer then
+		elseif not UnitPlayerControlled("mouseover")
+			and not mousePressed
+			and (not tooltip.lastPos == "mouse" or  tooltip.lastPos == "") then
 			mouseAnchor(tooltip, parent)
 		--elseif not UnitExists("mouseover") then
 		--	mouseAnchor(tooltip, parent)
-		else
-			lastViewPlayer = true
+		elseif (not tooltip.lastPos == "bottom" or  tooltip.lastPos == "") then
 			tooltip:ClearAllPoints()
 			tooltip:SetPoint("BOTTOMRIGHT",parent,"BOTTOMRIGHT", resX*edgeOffsetX, resY*edgeOffsetY)
-			tooltip:SetScript("OnShow", tooltip.Show);
+			tooltip.lastPos = "bottom"
+			--tooltip:SetScript("OnShow", tooltip.Show);
+			--tooltip:Show()
 			--UIFrameFadeOut(tooltip, 1, 0, 1)
 		end
 	else
@@ -73,12 +82,15 @@ local function BetterTooltip_OnUpdate(tooltip, elapsed)
 		--UIFrameFadeOut(tooltip, 1, 0, 1)
 	end
 	--print(GameTooltip.TimeSinceLastUpdate)
+	--print(UnitName("mouseover"))
+	--print(mouseFocus:GetName())
 end
 
 function GameTooltip_SetDefaultAnchor(tooltip, parent)
-	lastViewPlayer = false
+	tooltip.lastPos = ""
 	tooltip:SetOwner(parent, "ANCHOR_NONE");
 	tooltip.default = 1
+	tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME;
 	WorldFrame:HookScript("OnMouseDown", BetterTooltip_OnMouseDown);
 	WorldFrame:HookScript("OnMouseUp", BetterTooltip_OnMouseUp);
 	BetterTooltip_OnUpdate(tooltip, 0);
