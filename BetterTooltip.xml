@@ -13,9 +13,6 @@
 			<OnLoad>
 				BetterTooltip_OnLoad();
 			</OnLoad>
-			<OnEvent>
-				BetterTooltip_OnEvent(event);
-			</OnEvent>
 		</Scripts>
 	</Frame>
 </Ui>
