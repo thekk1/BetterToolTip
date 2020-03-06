@@ -4,16 +4,15 @@ local scale = nil
 local edgeOffsetX = 0.08 --Distance from right screen edge in percent
 local edgeOffsetY = 0.10 --Distance from bottom screen edge in percent
 local cursorOffsetX = 25 --X offset to cursor (scaled) pixel 
-local cursorOffsetY = 50 --Y offset to cursor (scaled) pixel
+local cursorOffsetY = 25 --Y offset to cursor (scaled) pixel
 --Move it with the mouse updates, but not too often so we don't waste CPU
 local mousePressed = false
-local lastViewPlayer = false
 
 function BetterTooltip_OnLoad()
 	------------------ Register game event handlers ---------------------------
-	BetterTooltipFrame:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
+	--BetterTooltipFrame:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
 	-------------------- Register game event handlers ---------------------------
-	print("GameTooltip loaded")
+	print("Better Tooltip loaded")
 	-------------------- something stuff --------------------------------
 	resX = GetScreenHeight() * -1
 	resY = GetScreenHeight()
@@ -42,17 +41,11 @@ function BetterTooltip_OnMouseUp()
 end
 
 local function BetterTooltip_OnUpdate(tooltip, elapsed)
-	--Preserve Auction House Tooltip Behavior
 	parent=tooltip:GetParent();
+	--Preserve Auction House Tooltip Behavior
 	if AuctionFrame and AuctionFrame:IsShown() then
 		return
 	end
-	
-	tooltip.TimeSinceLastUpdate = tooltip.TimeSinceLastUpdate - elapsed
-	if ( tooltip.updateTooltip < 0 or not tooltip.default) then
-		return;
-	end
-	tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME;
 
 	--Set the Tooltip position, if we're on WorldFrame, anchor to the mouse; if we're on a UnitFrame anchor to that.
 	local mouseFocus=GetMouseFocus()
@@ -64,11 +57,11 @@ local function BetterTooltip_OnUpdate(tooltip, elapsed)
 			return
 		elseif not UnitPlayerControlled("mouseover")
 			and not mousePressed
-			and (not tooltip.lastPos == "mouse" or  tooltip.lastPos == "") then
+			and (tooltip.lastPos == "") then
 			mouseAnchor(tooltip, parent)
 		--elseif not UnitExists("mouseover") then
 		--	mouseAnchor(tooltip, parent)
-		elseif (not tooltip.lastPos == "bottom" or  tooltip.lastPos == "") then
+		elseif (tooltip.lastPos == "bottom" or  tooltip.lastPos == "") then
 			tooltip:ClearAllPoints()
 			tooltip:SetPoint("BOTTOMRIGHT",parent,"BOTTOMRIGHT", resX*edgeOffsetX, resY*edgeOffsetY)
 			tooltip.lastPos = "bottom"
@@ -89,7 +82,6 @@ function GameTooltip_SetDefaultAnchor(tooltip, parent)
 	tooltip.lastPos = ""
 	tooltip:SetOwner(parent, "ANCHOR_NONE");
 	tooltip.default = 1
-	tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME;
 	WorldFrame:HookScript("OnMouseDown", BetterTooltip_OnMouseDown);
 	WorldFrame:HookScript("OnMouseUp", BetterTooltip_OnMouseUp);
 	BetterTooltip_OnUpdate(tooltip, 0);
