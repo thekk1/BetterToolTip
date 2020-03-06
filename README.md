@@ -1,4 +1,4 @@
-# Flurry
+# Better Tooltip
 WoW - Addon - Change behavior of tooltip.
 
 Download and unzip to your WoW Addon folder. (..\World of Warcraft\_retail_\Interface\AddOns)
