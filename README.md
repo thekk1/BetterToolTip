@@ -9,7 +9,7 @@ Rename folder "BetterTooltip-master" to "BetterTooltip".
 | --- | --- |
 | Mouseover an Player | Shows tooltip bottom right |
 | Mouseover anything else | Shows tooltip at cursor |
-| Infight | no tooltips on 3D objects, just on buttons |
+| Infight | no tooltips |
 
 ## Setup
 Open BetterTooltip.lua in your addon folder.

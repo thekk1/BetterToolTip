@@ -42,9 +42,8 @@ function BetterTooltip_OnMouseUp()
 end
 
 local function BetterTooltip_OnUpdate(tooltip, elapsed)
-	if tooltip.TimeSinceLastUpdate > 1000 or tooltip.TimeSinceLastUpdate < 1000 then tooltip.TimeSinceLastUpdate = TOOLTIP_UPDATE_TIME; end
-	parent=tooltip:GetParent();
 	--Preserve Auction House Tooltip Behavior
+	parent=tooltip:GetParent();
 	if AuctionFrame and AuctionFrame:IsShown() then
 		return
 	end
