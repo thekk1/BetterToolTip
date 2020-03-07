@@ -7,8 +7,8 @@ Rename folder "BetterTooltip-master" to "BetterTooltip".
 ## Addon changes tooltip by:
 | Action | Behavior | 
 | --- | --- |
-| Mouseover an Player | Shows tooltip bottom right |
-| Mouseover anything else | Shows tooltip at cursor |
+| Mouseover an Player | Shows tooltip bottom right, slighty fade out, mouse over this tooltip let them stay visible |
+| Mouseover anything else | Shows tooltip at cursor, immidiatly hide if object no longer under cursor, a bit more transparent than other tooltips |
 | Infight | no tooltips in 3D world, only on user interface |
 
 ## Setup
